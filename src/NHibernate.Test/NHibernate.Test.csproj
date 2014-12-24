@@ -691,6 +691,8 @@
     <Compile Include="NHSpecificTest\BagWithLazyExtraAndFilter\Fixture.cs" />
     <Compile Include="Linq\ByMethod\DistinctTests.cs" />
     <Compile Include="Component\Basic\ComponentWithUniqueConstraintTests.cs" />
+    <Compile Include="NHSpecificTest\NH3634\Connection.cs" />
+    <Compile Include="NHSpecificTest\NH3634\FixtureByCode.cs" />
     <Compile Include="NHSpecificTest\NH3487\Entity.cs" />
     <Compile Include="NHSpecificTest\NH3487\Fixture.cs" />
     <Compile Include="NHSpecificTest\NH3570\BiFixture.cs" />
@@ -806,6 +808,8 @@
     <Compile Include="NHSpecificTest\NH3202\Fixture.cs" />
     <Compile Include="NHSpecificTest\NH3604\Entity.cs" />
     <Compile Include="NHSpecificTest\NH3604\FixtureByCode.cs" />
+    <Compile Include="NHSpecificTest\NH3634\Person.cs" />
+    <Compile Include="NHSpecificTest\NH3634\PersonMapper.cs" />
     <Compile Include="NHSpecificTest\NH646\Domain.cs" />
     <Compile Include="NHSpecificTest\NH646\Fixture.cs" />
     <Compile Include="NHSpecificTest\NH3234\Fixture.cs" />
