@@ -1,4 +1,5 @@
 ﻿using NHibernate.Cfg.MappingSchema;
+using NHibernate.Criterion;
 using NHibernate.Mapping.ByCode;
 using NUnit.Framework;
 
@@ -76,6 +77,28 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 				var sally = session.QueryOver<Person>()
 								   .Where(p => p.Connection == componentToCompare)
 								   .SingleOrDefault<Person>();
+
+				Assert.That(sally.Name, Is.EqualTo("Sally"));
+				Assert.That(sally.Connection.PortName, Is.Null);
+			}
+		}
+
+		[Test]
+		public void ShouldBeAbleToQueryAgainstComponentWithANullPropertyUsingCriteria()
+		{
+			//Broken at the time NH3634 was reported
+			using (ISession session = OpenSession())
+			using (session.BeginTransaction())
+			{
+				var componentToCompare = new Connection
+				{
+					ConnectionType = "http",
+					Address = "test.com",
+					PortName = null
+				};
+				var sally = session.CreateCriteria<Person>()
+				                   .Add(Restrictions.Eq("Connection", componentToCompare))
+				                   .UniqueResult<Person>();
 
 				Assert.That(sally.Name, Is.EqualTo("Sally"));
 				Assert.That(sally.Connection.PortName, Is.Null);
