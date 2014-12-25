@@ -8,8 +8,8 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 	{
 		protected override HbmMapping GetMappings()
 		{
-		    var mapper = new ModelMapper();
-            mapper.AddMapping<PersonMapper>();
+			var mapper = new ModelMapper();
+			mapper.AddMapping<PersonMapper>();
 
 			return mapper.CompileMappingForAllExplicitlyAddedEntities();
 		}
@@ -19,29 +19,29 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 			using (ISession session = OpenSession())
 			using (ITransaction transaction = session.BeginTransaction())
 			{
-			    var bobsConnection = new Connection
-			        {
-			            Address = "test.com",
-			            ConnectionType = "http",
-			            PortName = "80"
-			        };
-			    var e1 = new Person
-			        {
-			            Name = "Bob", 
-                        Connection = bobsConnection
-			        };
+				var bobsConnection = new Connection
+					{
+						Address = "test.com",
+						ConnectionType = "http",
+						PortName = "80"
+					};
+				var e1 = new Person
+					{
+						Name = "Bob", 
+						Connection = bobsConnection
+					};
 				session.Save(e1);
 
-			    var sallysConnection = new Connection
-			        {
-			            Address = "test.com",
-			            ConnectionType = "http",
-			        };
+				var sallysConnection = new Connection
+					{
+						Address = "test.com",
+						ConnectionType = "http",
+					};
 				var e2 = new Person
-				    {
-				        Name = "Sally", 
-                        Connection = sallysConnection
-				    };
+					{
+						Name = "Sally", 
+						Connection = sallysConnection
+					};
 				session.Save(e2);
 
 				session.Flush();
@@ -63,39 +63,39 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 		[Test]
 		public void ShouldBeAbleToQueryAgainstComponentWithANullProperty()
 		{
-            //Broken at the time NH3634 was reported
+			//Broken at the time NH3634 was reported
 			using (ISession session = OpenSession())
 			using (session.BeginTransaction())
 			{
-                var componentToCompare = new Connection
-                    {
-                        ConnectionType = "http",
-                        Address = "test.com", 
-                        PortName = null
-                    };
-                var sally = session.QueryOver<Person>()
-                                   .Where(p => p.Connection == componentToCompare)
-                                   .SingleOrDefault<Person>();
+				var componentToCompare = new Connection
+					{
+						ConnectionType = "http",
+						Address = "test.com", 
+						PortName = null
+					};
+				var sally = session.QueryOver<Person>()
+								   .Where(p => p.Connection == componentToCompare)
+								   .SingleOrDefault<Person>();
 
-                Assert.That(sally.Name, Is.EqualTo("Sally"));
-                Assert.That(sally.Connection.PortName, Is.Null);
+				Assert.That(sally.Name, Is.EqualTo("Sally"));
+				Assert.That(sally.Connection.PortName, Is.Null);
 			}
 		}
 
-        [Test]
-        public void ShouldBeAbleToQueryAgainstANullComponentProperty()
-        {
-            //Works at the time NH3634 was reported
-            using (ISession session = OpenSession())
-            using (session.BeginTransaction())
-            {
-                var sally = session.QueryOver<Person>()
-                                   .Where(p => p.Connection.PortName == null)
-                                   .SingleOrDefault<Person>();
+		[Test]
+		public void ShouldBeAbleToQueryAgainstANullComponentProperty()
+		{
+			//Works at the time NH3634 was reported
+			using (ISession session = OpenSession())
+			using (session.BeginTransaction())
+			{
+				var sally = session.QueryOver<Person>()
+								   .Where(p => p.Connection.PortName == null)
+								   .SingleOrDefault<Person>();
 
-                Assert.That(sally.Name, Is.EqualTo("Sally"));
-                Assert.That(sally.Connection.PortName, Is.Null);
-            }
-        }
+				Assert.That(sally.Name, Is.EqualTo("Sally"));
+				Assert.That(sally.Connection.PortName, Is.Null);
+			}
+		}
 	}
 }
