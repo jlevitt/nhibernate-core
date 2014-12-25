@@ -64,7 +64,20 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 		[Test]
 		public void ShouldBeAbleToQueryAgainstComponentWithANullProperty()
 		{
-			//Broken at the time NH3634 was reported
+//			Broken at the time NH3634 was reported
+//			Generates the following Rpc(exec sp_executesql)
+//			SELECT this_.Id as Id0_0_, 
+//				   this_.Name as Name0_0_, 
+//				   this_.ConnectionType as Connecti3_0_0_, 
+//				   this_.Address as Address0_0_, 
+//				   this_.PortName as PortName0_0_ 
+//			  FROM people this_ 
+//			 WHERE this_.ConnectionType = @p0 
+//			   and this_.Address = @p1 
+//			   and this_.PortName = @p2
+//
+//			@p0=N'http',@p1=N'test.com',@p2=NULL
+
 			using (ISession session = OpenSession())
 			using (session.BeginTransaction())
 			{
@@ -86,7 +99,20 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 		[Test]
 		public void ShouldBeAbleToQueryAgainstComponentWithANullPropertyUsingCriteria()
 		{
-			//Broken at the time NH3634 was reported
+//			Broken at the time NH3634 was reported
+//			Generates the following Rpc(exec sp_executesql)
+//			SELECT this_.Id as Id0_0_, 
+//				   this_.Name as Name0_0_, 
+//				   this_.ConnectionType as Connecti3_0_0_, 
+//				   this_.Address as Address0_0_, 
+//				   this_.PortName as PortName0_0_ 
+//			  FROM people this_ 
+//			 WHERE this_.ConnectionType = @p0 
+//			   and this_.Address = @p1 
+//			   and this_.PortName = @p2
+//
+//			@p0=N'http',@p1=N'test.com',@p2=NULL
+
 			using (ISession session = OpenSession())
 			using (session.BeginTransaction())
 			{
@@ -108,7 +134,16 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 		[Test]
 		public void ShouldBeAbleToQueryAgainstANullComponentProperty()
 		{
-			//Works at the time NH3634 was reported
+//          Works at the time NH3634 was reported 
+//			Generates the following SqlBatch:			
+//			SELECT this_.Id as Id0_0_, 
+//				   this_.Name as Name0_0_, 
+//				   this_.ConnectionType as Connecti3_0_0_, 
+//				   this_.Address as Address0_0_, 
+//				   this_.PortName as PortName0_0_ 
+//			  FROM people this_ 
+//			 WHERE this_.PortName is null
+
 			using (ISession session = OpenSession())
 			using (session.BeginTransaction())
 			{
