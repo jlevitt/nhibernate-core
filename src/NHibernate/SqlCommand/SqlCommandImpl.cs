@@ -104,7 +104,7 @@ namespace NHibernate.SqlCommand
 				throw new AssertionFailure("singleSqlParametersOffset < 0 - this indicate a bug in NHibernate ");
 			}
 			// due to IType.NullSafeSet(System.Data.IDbCommand , object, int, ISessionImplementor) the SqlType[] is supposed to be in a certain sequence.
-			// this mean that found the first location of a parameter for the IType span, the others are in secuence
+			// this mean that found the first location of a parameter for the IType span, the others are in sequence
 			foreach (IParameterSpecification specification in Specifications)
 			{
 				string firstParameterId = specification.GetIdsForBackTrack(factory).First();
