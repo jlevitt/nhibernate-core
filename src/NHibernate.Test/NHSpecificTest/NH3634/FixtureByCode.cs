@@ -11,6 +11,7 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 		{
 			var mapper = new ModelMapper();
 			mapper.AddMapping<PersonMapper>();
+			mapper.AddMapping<CachedPersonMapper>();
 
 			return mapper.CompileMappingForAllExplicitlyAddedEntities();
 		}
@@ -45,8 +46,21 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 					};
 				session.Save(e2);
 
+				var cachedConnection = new Connection
+				{
+					Address = "test.com",
+					ConnectionType = "http",
+				};
+				var cachedPerson = new CachedPerson
+				{
+					Name = "Cached",
+					Connection = cachedConnection
+				};
+				session.Save(cachedPerson);
+
 				session.Flush();
 				transaction.Commit();
+				session.Evict(typeof(CachedPerson));
 			}
 		}
 
@@ -128,6 +142,53 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 
 				Assert.That(sally.Name, Is.EqualTo("Sally"));
 				Assert.That(sally.Connection.PortName, Is.Null);
+			}
+		}
+
+		[Test]
+		public void CachedQueryAgainstComponentWithANullPropertyUsingCriteria()
+		{
+			var componentToCompare = new Connection
+				{
+					ConnectionType = "http",
+					Address = "test.com",
+					PortName = null
+				};
+
+			using (ISession session = OpenSession())
+			using (ITransaction tx = session.BeginTransaction())
+			{
+				var cached = session.CreateCriteria<CachedPerson>()
+								   .Add(Restrictions.Eq("Connection", componentToCompare))
+								   .SetCacheable(true)
+								   .UniqueResult<CachedPerson>();
+
+				Assert.That(cached.Name, Is.EqualTo("Cached"));
+				Assert.That(cached.Connection.PortName, Is.Null);
+
+				using (var dbCommand = session.Connection.CreateCommand())
+				{
+					dbCommand.CommandText = "DELETE FROM cachedpeople";
+					tx.Enlist(dbCommand);
+					dbCommand.ExecuteNonQuery();
+				}
+
+				tx.Commit();
+			}
+
+			using (ISession session = OpenSession())
+			using (ITransaction tx = session.BeginTransaction())
+			{
+				//Should retreive from cache since we deleted directly from database.
+				var cached = session.CreateCriteria<CachedPerson>()
+								   .Add(Restrictions.Eq("Connection", componentToCompare))
+								   .SetCacheable(true)
+								   .UniqueResult<CachedPerson>();
+
+				Assert.That(cached.Name, Is.EqualTo("Cached"));
+				Assert.That(cached.Connection.PortName, Is.Null);
+
+				tx.Commit();
 			}
 		}
 
