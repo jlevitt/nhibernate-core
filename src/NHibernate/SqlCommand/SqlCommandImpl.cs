@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -114,7 +115,7 @@ namespace NHibernate.SqlCommand
 					int firstParamNameIndex = effectiveParameterLocations.First() + singleSqlParametersOffset;
 					foreach (int location in effectiveParameterLocations)
 					{
-						int parameterSpan = specification.ExpectedType.GetColumnSpan(factory);
+						int parameterSpan = Math.Min(specification.ExpectedType.GetColumnSpan(factory), SqlQueryParametersList.Count);
 						for (int j = 0; j < parameterSpan; j++)
 						{
 							sqlQueryParametersList[location + j].ParameterPosition = firstParamNameIndex + j;
