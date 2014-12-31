@@ -62,7 +62,7 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 		}
 
 		[Test]
-		public void ShouldBeAbleToQueryAgainstComponentWithANullProperty()
+		public void QueryOverComponentWithANullProperty()
 		{
 //			Broken at the time NH3634 was reported
 //			Generates the following Rpc(exec sp_executesql)
@@ -97,7 +97,7 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 		}
 
 		[Test]
-		public void ShouldBeAbleToQueryAgainstComponentWithANullPropertyUsingCriteria()
+		public void QueryAgainstComponentWithANullPropertyUsingCriteria()
 		{
 //			Broken at the time NH3634 was reported
 //			Generates the following Rpc(exec sp_executesql)
@@ -132,7 +132,7 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 		}
 
 		[Test]
-		public void ShouldBeAbleToQueryAgainstANullComponentProperty()
+		public void QueryOverANullComponentProperty()
 		{
 //          Works at the time NH3634 was reported 
 //			Generates the following SqlBatch:			
@@ -159,7 +159,7 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 		}
 
 		[Test]
-		public void ShouldBeAbleToQueryAgainstANullComponentPropertyUsingCriteriaApi()
+		public void QueryAgainstANullComponentPropertyUsingCriteriaApi()
 		{
 			using (ISession session = OpenSession())
 			using (session.BeginTransaction())
