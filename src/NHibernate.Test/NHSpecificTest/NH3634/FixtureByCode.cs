@@ -164,13 +164,11 @@ namespace NHibernate.Test.NHSpecificTest.NH3634
 			using (ISession session = OpenSession())
 			using (session.BeginTransaction())
 			{
-				NHibernateUtil.HitBreakPoint = true;
 				var sally = session.CreateCriteria<Person>()
 				                   .Add(Restrictions.Eq("Connection.PortName", null))
 				                   .Add(Restrictions.Eq("Connection.Address", "test.com"))
 				                   .Add(Restrictions.Eq("Connection.ConnectionType", "http"))
 				                   .UniqueResult<Person>();
-				NHibernateUtil.HitBreakPoint = false;
 
 				Assert.That(sally.Name, Is.EqualTo("Sally"));
 				Assert.That(sally.Connection.PortName, Is.Null);

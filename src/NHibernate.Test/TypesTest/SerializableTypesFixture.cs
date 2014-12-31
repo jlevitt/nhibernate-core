@@ -14,7 +14,7 @@ namespace NHibernate.Test.TypesTest
 			NHAssert.InheritedAreMarkedSerializable(typeof(IType));
 		}
 
-		[Test, Ignore]
+		[Test]
 		public void EachEmbeddedBasicTypeIsSerializable()
 		{
 			FieldInfo[] builtInCustomTypes = typeof(NHibernateUtil).GetFields(BindingFlags.Public | BindingFlags.Static);
