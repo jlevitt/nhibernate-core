@@ -8,6 +8,7 @@ namespace NHibernate.Test.NHSpecificTest.Demo
 		public PersonMapper()
 		{
 			Id(p => p.Id, m => m.Generator(Generators.Identity));
+			//Id(p => p.Id, m => m.Generator(Generators.HighLow));
 			Table("people");
 			Property(p => p.Name);
             Property(p => p.Age);
