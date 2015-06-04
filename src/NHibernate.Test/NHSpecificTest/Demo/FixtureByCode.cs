@@ -57,7 +57,7 @@ namespace NHibernate.Test.NHSpecificTest.Demo
 				var bob = session.Get<Person>(bobId);
 				bob.Age = 3;
 				session.Update(bob);    //<-----
-                tx.Commit();
+                tx.Commit();            //<-----
 			}
 		}
 
@@ -106,7 +106,7 @@ namespace NHibernate.Test.NHSpecificTest.Demo
 		}
 
 		/**
-		 * Session.Save. When is it flushed. What if we change generators?
+		 * Session.Save. When is it flushed? 
 		 */
 		[Test]
 		public void Save()
@@ -120,7 +120,7 @@ namespace NHibernate.Test.NHSpecificTest.Demo
 						Age = 17
 					};
 				session.Save(stu);  //<------
-				tx.Commit();
+				tx.Commit();        //<------
 			}
 		}
 
